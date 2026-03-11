@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    height: 1920px;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    font-family: 'Lato', sans-serif;
+    position: relative;
+  }
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.78));
+    padding: 40px 60px 60px;
+  }
+  .intestazione {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 72px;
+    color: #FFD700;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .data {
+    font-family: 'Lato', sans-serif;
+    font-size: 32px;
+    color: #F5F0E8;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+  .separatore {
+    width: 100%;
+    height: 2px;
+    background: #FFD700;
+    margin-bottom: 40px;
+  }
+  .blocco-info {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .riga {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .label {
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    color: #4A90B8;
+    font-weight: 400;
+    min-width: 180px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-top: 6px;
+  }
+  .valore {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    color: #F5F0E8;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .meteo-temp {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    color: #F5F0E8;
+  }
+  .claim {
+    margin-top: 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 30px;
+    color: rgba(245,240,232,0.7);
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="overlay">
+  <div class="intestazione">Bollettino</div>
+  <div class="data" id="data"></div>
+  <div class="separatore"></div>
+  <div class="blocco-info">
+    <div class="riga">
+      <span class="label">Meteo</span>
+      <span class="valore meteo-temp" id="meteo"></span>
+    </div>
+    <div class="riga">
+      <span class="label">Santo</span>
+      <span class="valore" id="santo"></span>
+    </div>
+    <div class="riga">
+      <span class="label">Nati oggi</span>
+      <span class="valore" id="nati"></span>
+    </div>
+    <div class="riga">
+      <span class="label">Bar</span>
+      <span class="valore" id="bar"></span>
+    </div>
+    <div class="riga">
+      <span class="label">Ristorante</span>
+      <span class="valore" id="ristorante"></span>
+    </div>
+  </div>
+  <div class="claim">Da lontano sembriamo tutti normali</div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  // Sfondo
+  const bg = params.get('bg');
+  if (bg) {
+    document.body.style.setProperty('--bg-image', 'url("' + decodeURIComponent(bg) + '")');
+  }
+
+  // Data
+  document.getElementById('data').textContent = decodeURIComponent(params.get('data') || '');
+
+  // Meteo
+  document.getElementById('meteo').textContent = decodeURIComponent(params.get('meteo') || '');
+
+  // Santo
+  document.getElementById('santo').textContent = decodeURIComponent(params.get('santo') || '');
+
+  // Nati oggi
+  document.getElementById('nati').textContent = decodeURIComponent(params.get('nati') || '');
+
+  // Bar
+  document.getElementById('bar').textContent = decodeURIComponent(params.get('bar') || '');
+
+  // Ristorante
+  document.getElementById('ristorante').textContent = decodeURIComponent(params.get('ristorante') || '');
+</script>
+</body>
+</html>
