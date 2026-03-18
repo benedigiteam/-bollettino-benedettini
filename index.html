@@ -64,18 +64,35 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      background: rgba(10, 20, 30, 0.45);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 32px 40px;
+      align-self: flex-start;
     }
     .brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 52px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .brand-sopra {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.30em;
       text-transform: uppercase;
       color: var(--bianco);
-      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+      opacity: 0.75;
     }
-    .brand span {
+    .brand-sotto {
+      font-family: 'Playfair Display', serif;
+      font-size: 58px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
       color: var(--oro);
+      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+      line-height: 1;
     }
     .data-label {
       font-size: 26px;
@@ -244,7 +261,10 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="brand">I <span>Benedettini</span></div>
+    <div class="brand">
+      <div class="brand-sopra">Bollettino</div>
+      <div class="brand-sotto">Benedettino</div>
+    </div>
     <div class="data-label" id="el-data">— data —</div>
     <div class="divider"></div>
   </div>
