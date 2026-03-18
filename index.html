@@ -1,145 +1,366 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-<meta charset="UTF-8">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 1080px;
-    height: 1920px;
-    background-image: var(--bg-image);
-    background-size: cover;
-    background-position: center;
-    font-family: 'Lato', sans-serif;
-    position: relative;
-  }
-  .overlay {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: linear-gradient(transparent, rgba(0,0,0,0.78));
-    padding: 40px 60px 60px;
-  }
-  .intestazione {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 72px;
-    color: #FFD700;
-    letter-spacing: 4px;
-    margin-bottom: 8px;
-  }
-  .data {
-    font-family: 'Lato', sans-serif;
-    font-size: 32px;
-    color: #F5F0E8;
-    margin-bottom: 40px;
-    letter-spacing: 2px;
-  }
-  .separatore {
-    width: 100%;
-    height: 2px;
-    background: #FFD700;
-    margin-bottom: 40px;
-  }
-  .blocco-info {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  .riga {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  .label {
-    font-family: 'Lato', sans-serif;
-    font-size: 24px;
-    color: #4A90B8;
-    font-weight: 400;
-    min-width: 180px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding-top: 6px;
-  }
-  .valore {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 38px;
-    color: #F5F0E8;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-  .meteo-temp {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    color: #F5F0E8;
-  }
-  .claim {
-    margin-top: 48px;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 30px;
-    color: rgba(245,240,232,0.7);
-    text-align: right;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1080" />
+  <title>Bollettino I Benedettini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --azzurro:   #4A90B8;
+      --bianco:    #F5F0E8;
+      --oro:       #FFD700;
+      --grigio:    #2C2C2C;
+      --overlay:   rgba(10, 20, 30, 0.52);
+      --overlay2:  rgba(10, 20, 30, 0.72);
+    }
+
+    html, body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── SFONDO ── */
+    #bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--grigio);
+    }
+    #bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(10,20,30,0.55) 0%,
+          rgba(10,20,30,0.30) 35%,
+          rgba(10,20,30,0.30) 60%,
+          rgba(10,20,30,0.75) 100%);
+    }
+
+    /* ── LAYOUT ── */
+    #card {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 72px 80px 80px;
+      color: var(--bianco);
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bianco);
+      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+    }
+    .brand span {
+      color: var(--oro);
+    }
+    .data-label {
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--bianco);
+      opacity: 0.88;
+      text-transform: uppercase;
+    }
+    .divider {
+      width: 80px;
+      height: 3px;
+      background: var(--oro);
+      margin-top: 8px;
+      border-radius: 2px;
+    }
+
+    /* ── CORPO CENTRALE ── */
+    .body {
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+
+    /* ── METEO ── */
+    .meteo-block {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px;
+      padding: 36px 48px;
+    }
+    .meteo-icona {
+      font-size: 100px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4));
+    }
+    .meteo-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .meteo-label {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bianco);
+      opacity: 0.75;
+    }
+    .meteo-condizione {
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--bianco);
+      opacity: 0.90;
+      text-transform: capitalize;
+    }
+
+    /* ── ORARI ── */
+    .orari-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .orario-card {
+      background: rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px;
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .orario-titolo {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--oro);
+    }
+    .orario-stato {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--bianco);
+      line-height: 1.1;
+    }
+    .orario-fascia {
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--bianco);
+      opacity: 0.85;
+      line-height: 1.5;
+    }
+
+    /* ── CITAZIONE ── */
+    .citazione-block {
+      background: rgba(74,144,184,0.18);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(74,144,184,0.35);
+      border-left: 5px solid var(--oro);
+      border-radius: 0 20px 20px 0;
+      padding: 36px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .citazione-testo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--bianco);
+      line-height: 1.45;
+    }
+    .citazione-autore {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--bianco);
+      opacity: 0.72;
+      text-align: right;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      text-align: center;
+    }
+    .claim {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--bianco);
+      opacity: 0.80;
+      letter-spacing: 0.04em;
+    }
+    .footer-tag {
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: var(--bianco);
+      opacity: 0.50;
+    }
+
+    /* ── CHIUSO override colore ── */
+    .stato-chiuso { color: #ff8a80; }
+  </style>
 </head>
 <body>
-<div class="overlay">
-  <div class="intestazione">Bollettino</div>
-  <div class="data" id="data"></div>
-  <div class="separatore"></div>
-  <div class="blocco-info">
-    <div class="riga">
-      <span class="label">Meteo</span>
-      <span class="valore meteo-temp" id="meteo"></span>
-    </div>
-    <div class="riga">
-      <span class="label">Santo</span>
-      <span class="valore" id="santo"></span>
-    </div>
-    <div class="riga">
-      <span class="label">Nati oggi</span>
-      <span class="valore" id="nati"></span>
-    </div>
-    <div class="riga">
-      <span class="label">Bar</span>
-      <span class="valore" id="bar"></span>
-    </div>
-    <div class="riga">
-      <span class="label">Ristorante</span>
-      <span class="valore" id="ristorante"></span>
-    </div>
+
+<!-- SFONDO -->
+<div id="bg"></div>
+
+<!-- CARD PRINCIPALE -->
+<div id="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">I <span>Benedettini</span></div>
+    <div class="data-label" id="el-data">— data —</div>
+    <div class="divider"></div>
   </div>
-  <div class="claim">Da lontano sembriamo tutti normali</div>
+
+  <!-- CORPO -->
+  <div class="body">
+
+    <!-- METEO -->
+    <div class="meteo-block">
+      <div class="meteo-icona" id="el-icona">☀️</div>
+      <div class="meteo-info">
+        <div class="meteo-label">Polignano a Mare</div>
+        <div class="meteo-condizione" id="el-condizione">—</div>
+      </div>
+    </div>
+
+    <!-- ORARI -->
+    <div class="orari-grid">
+      <div class="orario-card">
+        <div class="orario-titolo">☕ Bar</div>
+        <div class="orario-stato" id="el-bar-stato">—</div>
+        <div class="orario-fascia" id="el-bar-orario"></div>
+      </div>
+      <div class="orario-card">
+        <div class="orario-titolo">🍽️ Ristorante</div>
+        <div class="orario-stato" id="el-rist-stato">—</div>
+        <div class="orario-fascia" id="el-rist-orario"></div>
+      </div>
+    </div>
+
+    <!-- CITAZIONE -->
+    <div class="citazione-block">
+      <div class="citazione-testo" id="el-citazione">«…»</div>
+      <div class="citazione-autore" id="el-autore">—</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="claim">Da lontano sembriamo tutti normali</div>
+    <div class="footer-tag">ibenedettini.it</div>
+  </div>
+
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
+  /* ══════════════════════════════════════════════════
+     MAPPATURA PARAMETRI URL → ELEMENTI HTML
 
-  // Sfondo
-  const bg = params.get('bg');
-  if (bg) {
-    document.body.style.setProperty('--bg-image', 'url("' + decodeURIComponent(bg) + '")');
-  }
+     Parametri supportati (tutti opzionali — fallback integrato):
+       bg          → URL immagine sfondo (Dropbox share link)
+       data        → Es. "18 marzo 2026"
+       condizione  → Es. "nuvoloso" (testo descrittivo meteo)
+       icona       → Emoji meteo: ☀️ ⛅ 🌧️ 🌩️ 🌫️ ecc.
+       bar         → Es. "Aperto" o "Chiuso"
+       bar_orario  → Es. "08:00 – 18:00"
+       rist        → Es. "Aperto" o "Chiuso"
+       rist_orario → Es. "12:30 – 15:00 / 19:30 – 22:30"
+       citazione   → Testo citazione del giorno
+       autore      → Autore citazione
 
-  // Data
-  document.getElementById('data').textContent = decodeURIComponent(params.get('data') || '');
+     Esempio URL completo:
+     https://benedigiteam.github.io/-bollettino-benedettini/
+       ?bg=https://dl.dropboxusercontent.com/…
+       &data=18%20marzo%202026
+       &condizione=nuvoloso
+       &icona=⛅
+       &bar=Aperto
+       &bar_orario=08%3A00%20–%2018%3A00
+       &rist=Chiuso
+       &rist_orario=
+       &citazione=Il%20mare%20non%20ha%20fine
+       &autore=Anonimo
+  ══════════════════════════════════════════════════ */
 
-  // Meteo
-  document.getElementById('meteo').textContent = decodeURIComponent(params.get('meteo') || '');
+  (function () {
+    const p = new URLSearchParams(window.location.search);
+    const get = (k, def) => p.has(k) && p.get(k).trim() !== '' ? p.get(k).trim() : def;
 
-  // Santo
-  document.getElementById('santo').textContent = decodeURIComponent(params.get('santo') || '');
+    /* Sfondo */
+    const bgUrl = get('bg', '');
+    if (bgUrl) {
+      document.getElementById('bg').style.backgroundImage = `url('${bgUrl}')`;
+    }
 
-  // Nati oggi
-  document.getElementById('nati').textContent = decodeURIComponent(params.get('nati') || '');
+    /* Data */
+    document.getElementById('el-data').textContent = get('data', '—');
 
-  // Bar
-  document.getElementById('bar').textContent = decodeURIComponent(params.get('bar') || '');
+    /* Meteo */
+    document.getElementById('el-condizione').textContent = get('condizione', '—');
+    document.getElementById('el-icona').textContent = get('icona', '🌤️');
 
-  // Ristorante
-  document.getElementById('ristorante').textContent = decodeURIComponent(params.get('ristorante') || '');
+    /* Bar */
+    const barStato = get('bar', '—');
+    const barEl = document.getElementById('el-bar-stato');
+    barEl.textContent = barStato;
+    if (barStato.toLowerCase() === 'chiuso') barEl.classList.add('stato-chiuso');
+    document.getElementById('el-bar-orario').textContent = get('bar_orario', '');
+
+    /* Ristorante */
+    const ristStato = get('rist', '—');
+    const ristEl = document.getElementById('el-rist-stato');
+    ristEl.textContent = ristStato;
+    if (ristStato.toLowerCase() === 'chiuso') ristEl.classList.add('stato-chiuso');
+    document.getElementById('el-rist-orario').innerHTML =
+      get('rist_orario', '').replace('/', '<br>');
+
+    /* Citazione */
+    const cit = get('citazione', '');
+    const aut = get('autore', '');
+    document.getElementById('el-citazione').textContent = cit ? `«${cit}»` : '«…»';
+    document.getElementById('el-autore').textContent = aut ? `— ${aut}` : '';
+
+  })();
 </script>
+
 </body>
 </html>
